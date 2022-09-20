@@ -43,24 +43,11 @@ verbose "BIN_DIR: $BIN_DIR"
 verbose "SHARE_DIR: $SHARE_DIR"
 verbose "RUNTIME_DIR: $RUNTIME_DIR"
 
-if [ -f $PANDOC_PKG ]; then
-  verbose "Using cached pandoc pkg: $PANDOC_PKG"
-else
-    verbose "Downloading $PANDOC_URL to $PANDOC_PKG"
-    curl --silent \
-         --location \
-         --output $PANDOC_PKG \
-         $PANDOC_URL | indent
-    if [ ! -f $PANDOC_PKG ]; then
-        verbose "Error retrieving file from $PANDOC_URL"
-        exit 1;
-    fi
-fi
+curl --location --output $PANDOC_PKG $PANDOC_URL
 
 verbose "Extract pandoc from $PANDOC_PKG to $INSTALL_DIR"
 
-ar p $PANDOC_PKG $DEB_ARCHIVE_BINARIES \
-    | tar xvzf --strip-components 1 -C $INSTALL_DIR | indent
+ar p $PANDOC_PKG $DEB_ARCHIVE_BINARIES | tar --extract --strip-components 1 -C $INSTALL_DIR | indent
 
 verbose "Set permissions on extracted binaries"
 chmod 755 $BIN_DIR/pandoc
