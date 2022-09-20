@@ -60,9 +60,7 @@ fi
 verbose "Extract pandoc from $PANDOC_PKG to $INSTALL_DIR"
 
 ar p $PANDOC_PKG $DEB_ARCHIVE_BINARIES \
-    | tar --extract \
-          --strip-components 2 \
-          --directory $INSTALL_DIR | indent
+    | tar xvzf --strip-components 1 -C $INSTALL_DIR | indent
 
 verbose "Set permissions on extracted binaries"
 chmod 755 $BIN_DIR/pandoc
